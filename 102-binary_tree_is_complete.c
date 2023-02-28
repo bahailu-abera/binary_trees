@@ -11,6 +11,7 @@
 int binary_tree_is_complete(const binary_tree_t *tree)
 {
 	queue_t *q;
+	int flag = 1;
 
 	if (tree == NULL)
 		return (0);
@@ -28,9 +29,12 @@ int binary_tree_is_complete(const binary_tree_t *tree)
 	while (!is_empty(q))
 	{
 		if (dequeue(q) != NULL)
-			return (0);
+		{
+			flag = 0;
+			break;
+		}
 	}
 
 	delete(q);
-	return (1);
+	return (flag);
 }

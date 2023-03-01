@@ -10,21 +10,21 @@
  */
 bst_t *bst_successor(bst_t *node)
 {
-    if (node == NULL)
-        return NULL;
+	if (node == NULL)
+		return (NULL);
 
-    if (node->right != NULL)
-    {
-        node = node->right;
-        while (node->left != NULL)
-            node = node->left;
-        return node;
-    }
+	if (node->right != NULL)
+	{
+		node = node->right;
+		while (node->left != NULL)
+			node = node->left;
+		return (node);
+	}
 
-    while (node->parent != NULL && node->parent->right == node)
-        node = node->parent;
+	while (node->parent != NULL && node->parent->right == node)
+		node = node->parent;
 
-    return node->parent;
+	return (node->parent);
 }
 
 /**
@@ -38,14 +38,14 @@ bst_t *bst_successor(bst_t *node)
  */
 void bst_shift(bst_t **tree, bst_t *u, bst_t *v)
 {
-    if (u->parent == NULL)
-        *tree = v;
-    else if (u == u->parent->left)
-        u->parent->left = v;
-    else
-        u->parent->right = v;
-    if (v != NULL)
-        v->parent = u->parent;
+	if (u->parent == NULL)
+		*tree = v;
+	else if (u == u->parent->left)
+		u->parent->left = v;
+	else
+		u->parent->right = v;
+	if (v != NULL)
+		v->parent = u->parent;
 }
 
 /**
@@ -59,16 +59,16 @@ void bst_shift(bst_t **tree, bst_t *u, bst_t *v)
  */
 bst_t *bst_search(const bst_t *tree, int value)
 {
-    if (tree == NULL)
-        return NULL;
+	if (tree == NULL)
+		return (NULL);
 
-    if (value == tree->n)
-        return (bst_t *)tree;
+	if (value == tree->n)
+		return ((bst_t *)tree);
 
-    if (value < tree->n)
-        return bst_search(tree->left, value);
-    else
-        return bst_search(tree->right, value);
+	if (value < tree->n)
+		return (bst_search(tree->left, value));
+	else
+		return (bst_search(tree->right, value));
 }
 
 /**
@@ -82,34 +82,34 @@ bst_t *bst_search(const bst_t *tree, int value)
  */
 bst_t *bst_remove(bst_t *root, int value)
 {
-    bst_t *node, *successor;
+	bst_t *node, *successor;
 
-    node = bst_search(root, value);
-    if (node == NULL)
-        return root;
+	node = bst_search(root, value);
+	if (node == NULL)
+		return (root);
 
-    if (node->left == NULL && node->right == NULL)
-    {
-        bst_shift(&root, node, NULL);
-    }
-    else if (node->left == NULL || node->right == NULL)
-    {
-        bst_shift(&root, node, (node->left != NULL ? node->left : node->right));
-    }
-    else
-    {
-        successor = bst_successor(node);
-        bst_shift(&root, successor, successor->right);
-        bst_shift(&root, node, successor);
-        successor->left = node->left;
-        successor->left->parent = successor;
-        if (node->right != successor)
-        {
-            successor->right = node->right;
-            successor->right->parent = successor;
-        }
-    }
+	if (node->left == NULL && node->right == NULL)
+	{
+		bst_shift(&root, node, NULL);
+	}
+	else if (node->left == NULL || node->right == NULL)
+	{
+		bst_shift(&root, node, (node->left != NULL ? node->left : node->right));
+	}
+	else
+	{
+		successor = bst_successor(node);
+		bst_shift(&root, successor, successor->right);
+		bst_shift(&root, node, successor);
+		successor->left = node->left;
+		successor->left->parent = successor;
+		if (node->right != successor)
+		{
+			successor->right = node->right;
+			successor->right->parent = successor;
+		}
+	}
 
-    free(node);
-    return root;
+	free(node);
+	return (root);
 }
